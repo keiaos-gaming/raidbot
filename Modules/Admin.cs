@@ -9,6 +9,9 @@ using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.Extensions.Configuration;
 
+/*
+    changed file name syntax for use on pi, for testing on pc use: fileName = fileName + @"\raids\" + raid + ".txt";
+ */
 namespace raidbot.Modules
 {
     public class Admin : ModuleBase
@@ -30,7 +33,7 @@ namespace raidbot.Modules
             
             string fileName = raid + ".txt";
             fileName = Path.GetFullPath(fileName).Replace(fileName, "");
-            fileName = fileName + @"\raids\" + raid + ".txt";
+            fileName = fileName + @"raids\" + raid + ".txt";
             if (Context.Channel.Id != botChannel)
             {
                 await ReplyAsync($"Please use this command in {(await Context.Guild.GetChannelAsync(botChannel) as SocketTextChannel).Mention}");
@@ -115,7 +118,7 @@ namespace raidbot.Modules
 
                     string fileName = name + ".txt";
                     fileName = Path.GetFullPath(fileName).Replace(fileName, "");
-                    fileName = fileName + @"\raids\" + name + ".txt";
+                    fileName = fileName + @"raids\" + name + ".txt";
                     if (!File.Exists(fileName))
                     {
                         sendmsg = "Error: " + fileName + " does not exist.";
@@ -154,7 +157,7 @@ namespace raidbot.Modules
             {
                 string fileName = raid + ".txt";
                 fileName = Path.GetFullPath(fileName).Replace(fileName, "");
-                fileName = fileName + @"\raids\" + raid + ".txt";
+                fileName = fileName + @"raids\" + raid + ".txt";
                 if (!File.Exists(fileName))
                 {
                     await ReplyAsync("Error: " + fileName + " does not exist.");
