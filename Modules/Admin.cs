@@ -1,13 +1,16 @@
+using Discord;
+using Discord.Net;
+using Discord.WebSocket;
+using Discord.Commands;
 using System;
-using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using System.IO;
-using Discord;
-using Discord.Commands;
-using Discord.WebSocket;
+using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 /*
     changed file name syntax for use on pi, for testing on pc use: fileName = fileName + @"\raids\" + raid + ".txt";
@@ -16,14 +19,20 @@ namespace raidbot.Modules
 {
     public class Admin : ModuleBase
     {
-        //dev server ids
-        ulong signupsID = 365715381035466764;
-        ulong botChannel = 354072212971585536;
-/*
-        //washed up ids
-        ulong signupsID = 583131333623021569;
-        ulong botChannel = 583137667693281280;
-*/
+        //need _services to access config file
+        private readonly IServiceProvider _services;
+        private readonly IConfiguration _config;
+
+        ulong signupsID;
+        ulong botChannel;
+        public Admin(IServiceProvider services)
+        {
+            _config = services.GetRequiredService<IConfiguration>();
+            signupsID = Convert.ToUInt64(_config["SignupsID"]);
+            botChannel = Convert.ToUInt64(_config["BotchannelID"]);
+           
+        }
+
         [Command("openraid")]
         [Alias("open", "or")]
         [Summary("Creates text file to hold names and roles for sign ups")]

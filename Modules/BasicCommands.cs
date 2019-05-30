@@ -4,29 +4,35 @@ using Discord.WebSocket;
 using Discord.Commands;
 using System;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace raidbot.Modules
 {
     // for commands to be available, and have the Context passed to them, we must inherit ModuleBase
     public class BasicCommands : ModuleBase
     {
-        private readonly IConfiguration _config;
         private CommandService _service;
+        //need _services to access config file
+        private readonly IServiceProvider _services;
+        private readonly IConfiguration _config;
 
-        public BasicCommands(CommandService service)
+        public BasicCommands(CommandService service, IServiceProvider services)
         {
+            _config = services.GetRequiredService<IConfiguration>();
             _service = service;
+            
         }
 
         [Command("help")]
         [Summary("Shows what a specific command does and what parameters it takes.")]
         public async Task HelpAsync([Remainder, Summary("Command to retrieve help for")] string command = null)
         {
-            char prefix = '!';//Char.Parse(_config["Prefix"]);
+            char prefix = Char.Parse(_config["Prefix"]);
             
             if (command == null)
             {
@@ -100,5 +106,16 @@ namespace raidbot.Modules
         }
 
         //more commands under here
+        [Command("test")]
+        [Summary("Dev purposes only. Tests options in config file.")]
+        public async Task ServerTest()
+        {
+            char Prefix = Char.Parse(_config["Prefix"]);
+            var SignupsID =Convert.ToUInt64(_config["SignupsID"]);
+            var BotchannelID = Convert.ToUInt64(_config["BotchannelID"]) ;
+            var suchannel = await Context.Guild.GetChannelAsync(SignupsID) as SocketTextChannel;
+            var botchannel = await Context.Guild.GetChannelAsync(BotchannelID) as SocketTextChannel;
+            await ReplyAsync($"Prefix: '{Prefix}' \nRaid signups channel: {suchannel.Mention} \nBot channel: {botchannel.Mention}");
+        }
     }
 }
