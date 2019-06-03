@@ -67,7 +67,7 @@ namespace raidbot
 
         private Task ReadyAsync()
         {
-            Console.WriteLine($"Connected as -> [{_client.CurrentUser}] :)");
+            Console.WriteLine($"{DateTime.Now,0:t} Connected as -> [{_client.CurrentUser}] :)");
             return Task.CompletedTask;
         }
 

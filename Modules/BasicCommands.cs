@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
+
 namespace raidbot.Modules
 {
     // for commands to be available, and have the Context passed to them, we must inherit ModuleBase

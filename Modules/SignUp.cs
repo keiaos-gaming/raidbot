@@ -7,6 +7,14 @@ using System.IO;
 using Discord.Commands;
 using Discord;
 
+/*
+    Text File Format: Raid_name.txt
+    raid summary
+    role limits: tank heal mdps rdps
+    player name
+    player roles
+ */
+
 namespace raidbot
 {
     public class SignUp : ModuleBase
@@ -14,7 +22,8 @@ namespace raidbot
         int maxSignUps = 12;
         int tankLimit = 2;
         int healLimit = 2;
-        int dpsLimit = 8;
+        int mLimit = 4;
+        int rLimit = 4;
 
         [Command("signup")]
         [Alias("su")]
@@ -42,6 +51,8 @@ namespace raidbot
                     StreamReader sr = new StreamReader(fileName);
                     line = sr.ReadLine();
                     //skip first line (summary)
+                    line = sr.ReadLine();
+                    //skip role limits
                     line = sr.ReadLine();
 
                     //loop through file
@@ -157,7 +168,7 @@ namespace raidbot
                     }
 
                     //if raid is full 
-                    if (signUps >= maxSignUps)
+                    if (signUps >= (tankLimit + healLimit + mLimit + rLimit))
                     {
                         sendmsg += "\nRaid is full! Signed up as overflow.";
                     }
@@ -172,7 +183,7 @@ namespace raidbot
         {
             String line;
             string sendmsg = "";
-            string raidSum;
+            string raidSum, roleLimits;
 
             //define file path
             string fileName = raid + ".txt";
@@ -191,6 +202,7 @@ namespace raidbot
                 {
                     StreamReader sr = new StreamReader(fileName);
                     raidSum = sr.ReadLine();
+                    roleLimits = sr.ReadLine();
                     line = sr.ReadLine();
 
                     //loop through file
@@ -219,6 +231,7 @@ namespace raidbot
                     //rewrite names and roles to file
                     StreamWriter sw = new StreamWriter(fileName);
                     sw.WriteLine(raidSum);
+                    sw.WriteLine(roleLimits);
                     for (int x = 0; x < i; x++)
                     {
                         sw.WriteLine(names[x]);
@@ -247,6 +260,7 @@ namespace raidbot
             await ReplyAsync(sendmsg);
         }
 
+        //updated status for role limits
         [Command("status")]
         [Summary("Lists players signed up for specified raid")]
         public async Task StatusCmd([Summary("Name of raid for status.")] string raid = null)
@@ -270,7 +284,7 @@ namespace raidbot
                     int number = 0;
                     int mdps = 0, rdps = 0, tanks = 0, heals = 0;
                     string line;
-                    string raidSum;
+                    string raidSum, roleLimits;
                     //lists for player names
                     List<string> tankList = new List<string>(), healerList= new List<string>(), mdpsList= new List<string>(), rdpsList= new List<string>(), overflow = new List<string>();
                     //create embed
@@ -286,6 +300,26 @@ namespace raidbot
                         StreamReader sr = new StreamReader(fileName);
                         //read raid summary and add to embed
                         raidSum = sr.ReadLine();
+                        roleLimits = sr.ReadLine();
+
+                        //get role limits from file
+                        if (roleLimits != null)
+                        {
+
+                            try
+                            {
+                                string[] splitstring = roleLimits.Split(' ');
+                                tankLimit = Convert.ToInt32(splitstring[0]);
+                                healLimit = Convert.ToInt32(splitstring[1]);
+                                mLimit = Convert.ToInt32(splitstring[2]);
+                                rLimit = Convert.ToInt32(splitstring[3]);
+                            }
+                            catch(Exception e)
+                            {
+                                await ReplyAsync("Exception: " + e.Message);
+                            }
+                        }
+
                         builder.WithTitle(raidSum);
                         //get first name
                         line = sr.ReadLine();                        
@@ -305,12 +339,12 @@ namespace raidbot
                                 healerList.Add(player);
                                 heals++;
                             }
-                            else if (line.Contains("mdps")&& (mdpsList.Count() + rdpsList.Count()) < dpsLimit)
+                            else if (line.Contains("mdps")&& mdpsList.Count() < mLimit)
                             {
                                 mdpsList.Add(player);
                                 mdps++;
                             }
-                            else if (line.Contains("rdps")&& (mdpsList.Count() + rdpsList.Count()) < dpsLimit)
+                            else if (line.Contains("rdps")&&  rdpsList.Count() < rLimit)
                             {
                                 rdpsList.Add(player);
                                 rdps++;
@@ -373,7 +407,7 @@ namespace raidbot
                                 builder.AddField("Overflow:", players);
                             //add counts to footer
                             builder.WithFooter(footer => {
-                                footer.WithText(mdps + " mdps "+ rdps + " rdps " + tanks + " tanks " + heals + "heals , " + number + "/12 signed up");
+                                footer.WithText(mdps + " mdps "+ rdps + " rdps " + tanks + " tanks " + heals + "heals , " + number + $"/{tankLimit + healLimit + mLimit + rLimit} signed up");
                                 });
                             await Context.Channel.SendMessageAsync("", false, builder.Build()).ConfigureAwait(false);
                         }
@@ -454,7 +488,7 @@ namespace raidbot
                 }
                 if (roles.ToUpper().Contains("HEAL") || roles.ToUpper().Contains("HEALER") || roles.ToUpper().Contains("HEALS"))
                 {
-                    newRoles += " healer ";
+                    newRoles += "healer ";
                 }
                 if (newRoles == "") //roles given did not contain dps tank or heal
                 {

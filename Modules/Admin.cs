@@ -32,12 +32,14 @@ namespace raidbot.Modules
             botChannel = Convert.ToUInt64(_config["BotchannelID"]);
            
         }
-
+        
+        //TO DO: add some way to get role limits, null if not provided
+        
         [Command("openraid")]
         [Alias("open", "or")]
         [Summary("Creates text file to hold names and roles for sign ups")]
         [RequireUserPermission(GuildPermission.Administrator)]
-        public async Task OpenRaidCmd([Summary("Name for text file / name of raid, one word only.")] string raid, [Remainder, Summary("Custom message to send to signups channel, include information such as date/time, trials, normal/vet, etc.")] string message = null)
+        public async Task OpenRaidCmd([Summary("Name for text file / name of raid, one word only.")] string raid,[Summary("Number of tanks for raid.")] int tankLimit = 0, [Summary("Number of healers for raid.")]int healLimit = 0,[Summary("Number of melee DPS for raid.")] int mdpsLimit = 0,[Summary("Number of ranged DPS for raid.")] int rdpsLimit = 0, [Remainder, Summary("Custom message to send to signups channel, include information such as date/time, trials, normal/vet, etc.")] string message = null)
         {
             
             string fileName = raid + ".txt";
@@ -54,6 +56,10 @@ namespace raidbot.Modules
             else if (message == null)
             {
                 await ReplyAsync($"Please include more information about the raid to be saved and announced, such as time, date, specific raids, normal/veteran, etc.");
+            }
+            else if (tankLimit == 0 || healLimit == 0 || mdpsLimit == 0 || rdpsLimit == 0)
+            {
+                await ReplyAsync("Please include role limits with command. Use '!help openraid' for help on how to use this command.");
             }
             else
             {
@@ -88,19 +94,22 @@ namespace raidbot.Modules
                 {
                     await ReplyAsync("Exception: " + e.Message);
                 }
+
+                string roleLimits = "";
+                //add role limits if all are specified
+                if (tankLimit != 0 && healLimit != 0 && mdpsLimit != 0 && rdpsLimit != 0)
+                {
+                    roleLimits = $"{tankLimit.ToString()} {healLimit.ToString()} {mdpsLimit.ToString()} {rdpsLimit.ToString()}";
+                }
+
                 //write summary to file, write first signup as person who opened raid
-                string[] lines = {message, Context.Message.Author.Username, roles};
+                string[] lines = {message, roleLimits, Context.Message.Author.Username, roles};
                 File.WriteAllLines(fileName,lines);
 
                 var channel = await Context.Guild.GetChannelAsync(signupsID) as SocketTextChannel;
-                if (message != null)
-                {
-                    await channel.SendMessageAsync($"Raid signups now open for {raid}! \n{message}");
-                }
-                else
-                {
-                    await channel.SendMessageAsync($"Raid signups now open for {raid}!");
-                }
+                await channel.SendMessageAsync($"Raid signups now open for {raid}! \n{message}");
+                await ReplyAsync($"Successfully created raid. Role Limits: {tankLimit} tanks, {healLimit} healers, {mdpsLimit} mdps, {rdpsLimit} rdps.");
+
             }
         }
 
@@ -147,6 +156,7 @@ namespace raidbot.Modules
             await ReplyAsync(sendmsg);
         }
 
+        //roll call updated for role limit
         [Command("rollcall")]
         [Alias("rc")]
         [RequireUserPermission(GuildPermission.Administrator)]
@@ -164,9 +174,11 @@ namespace raidbot.Modules
             }
             else
             {
+                List<string> tankList = new List<string>(), healerList= new List<string>(), mdpsList= new List<string>(), rdpsList= new List<string>(), overflow = new List<string>();
                 string fileName = raid + ".txt";
                 fileName = Path.GetFullPath(fileName).Replace(fileName, "");
                 fileName = fileName + @"raids\" + raid + ".txt";
+                int tankLimit = 2, healLimit = 2, mLimit = 4, rLimit = 4;
                 if (!File.Exists(fileName))
                 {
                     await ReplyAsync("Error: " + fileName + " does not exist.");
@@ -180,49 +192,120 @@ namespace raidbot.Modules
                         StreamReader sr = new StreamReader(fileName);
                         //skip first line (summary)
                         line = sr.ReadLine();
+                        //skip role limits
+                        string roleLimits;
+                        line = sr.ReadLine();
+                        roleLimits = line;
+                        
+                        if (roleLimits != null)
+                        {
+                            try
+                            {
+                                string[] splitstring = roleLimits.Split(' ');
+                                tankLimit = Convert.ToInt32(splitstring[0]);
+                                healLimit = Convert.ToInt32(splitstring[1]);
+                                mLimit = Convert.ToInt32(splitstring[2]);
+                                rLimit = Convert.ToInt32(splitstring[3]);
+                            }
+                            catch(Exception e)
+                            {
+                                await ReplyAsync("Exception: " + e.Message);
+                            }
+                        }
 
                         line = sr.ReadLine();
-                        if (line == null)
+                        if (line == null) //no signups in file
                         {
-                            await ReplyAsync("No users signed up for " + raid + " raid.");
+                            await ReplyAsync("No players signed up for raid.");
                         }
                         else
                         {
+                            SocketUser plyr = null;
                             var guild = Context.Guild as SocketGuild;
                             var users = guild.Users;
-                            int count = 0;
-                            while (line != null && count <= 11)
+                            while (line != null)
                             {
-                                SocketUser player = null;
-                                try
-                                {
-                                    player = users.Where(x => x.Username == line).First() as SocketUser;
-                                }
-                                catch(Exception e)
-                                {
-                                    Console.WriteLine($"Player {line} in {raid}.txt not found in server.");
-                                }
-                                if (player != null)
-                                {
-                                    sendmsg = sendmsg  + player.Mention + " ";
-                                    count++;
-                                }
+                                string player = line;
                                 line = sr.ReadLine();
+                                if (line.Contains("tank") && tankList.Count() < tankLimit)
+                                {
+                                    tankList.Add(player);
+                                }
+                                else if (line.Contains("healer")&& healerList.Count() < healLimit)
+                                {
+                                    healerList.Add(player);
+                                }
+                                else if (line.Contains("mdps")&& mdpsList.Count() < mLimit)
+                                {
+                                    mdpsList.Add(player);
+                                }
+                                else if (line.Contains("rdps")&&  rdpsList.Count() < rLimit)
+                                {
+                                    rdpsList.Add(player);
+                                }
+                                else
+                                {
+                                    overflow.Add($"{player}: {line}");
+                                }
+                            
                                 line = sr.ReadLine();
                             }
-                            sendmsg = sendmsg + "forming up for " + raid + "! Time to log in.";
+                            try
+                            {
+                                foreach (string tank in tankList)
+                                {
+                                    plyr = users.Where(x => x.Username == tank).First() as SocketUser;
+                                    if (plyr != null)
+                                    {
+                                        sendmsg = sendmsg  + plyr.Mention + " (tank), ";
+                                        plyr = null;
+                                    }
+                                }
+                                foreach (string heals in healerList)
+                                {
+                                    plyr = users.Where(x => x.Username == heals).First() as SocketUser;
+                                    if (plyr != null)
+                                    {
+                                        sendmsg = sendmsg  + plyr.Mention + " (healer), ";
+                                        plyr = null;
+                                    }
+                                }
+                                foreach (string melee in mdpsList)
+                                {
+                                    plyr = users.Where(x => x.Username == melee).First() as SocketUser;
+                                    if (plyr != null)
+                                    {
+                                        sendmsg = sendmsg  + plyr.Mention + " (mdps), ";
+                                        plyr = null;
+                                    }
+                                }
+                                foreach (string ranged in rdpsList)
+                                {
+                                    plyr = users.Where(x => x.Username == ranged).First() as SocketUser;
+                                    if (plyr != null)
+                                    {
+                                        sendmsg = sendmsg  + plyr.Mention + " (rdps), ";
+                                        plyr = null;
+                                    }
+                                }
+                            }
+                            catch(Exception e)
+                            {
+                                Console.WriteLine($"Player {line} in {raid}.txt not found in server.");
+                            }
                             var channel = await Context.Guild.GetChannelAsync(signupsID) as SocketTextChannel;
-                            await channel.SendMessageAsync(sendmsg);
+                            await channel.SendMessageAsync ($"{sendmsg}forming up for {raid}, time to log in!");
                         }
-                        
                         sr.Close();
                     }
                     catch (Exception e)
                     {
                         await ReplyAsync("Exception: " + e.Message);
                     }
+                    
                 }
             }
+            
         }
     }
 }
