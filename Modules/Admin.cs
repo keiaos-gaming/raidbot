@@ -44,7 +44,7 @@ namespace raidbot.Modules
             
             string fileName = raid + ".txt";
             fileName = Path.GetFullPath(fileName).Replace(fileName, "");
-            fileName = fileName + @"raids\" + raid + ".txt";
+            fileName = fileName + @"raids\" + raid.ToLower() + ".txt";
             if (Context.Channel.Id != botChannel)
             {
                 await ReplyAsync($"Please use this command in {(await Context.Guild.GetChannelAsync(botChannel) as SocketTextChannel).Mention}");
@@ -306,6 +306,161 @@ namespace raidbot.Modules
                 }
             }
             
+        }
+        [Command("edit")]
+        [RequireUserPermission(GuildPermission.Administrator)]
+        [Summary("Edits a specified user's sign up within a raid file.")]
+        public async Task EditCmd([Summary("Name of raid to edit.")] string raid = null, [Summary("Username or Mention of user to edit in file.")] SocketGuildUser user = null, [Remainder, Summary("Edit function, available options are: remove, add (roles optional), edit (new roles optional).")]string function = null)
+        {
+            if (raid == null)
+            {
+                await ReplyAsync("Please include the raid name with this command.");
+            }
+            else if (function == null)
+            {
+                await ReplyAsync("Please include a function with this command.");
+            }
+            else 
+            {
+                string line = "", sendmsg = "";
+                List<string> names = new List<string>();
+                List<string> roles = new List<string>();
+                bool playerFound = false;
+
+                //define filepath
+                string fileName = raid + ".txt";
+                fileName = Path.GetFullPath(fileName).Replace(fileName, "");
+                fileName = fileName + @"raids\" + raid.ToLower() + ".txt";
+
+                if (!File.Exists(fileName)) //file doesnt exist
+                {
+                    sendmsg = ($"Raid for {raid} doesn't exist!");
+                }
+                else
+                {
+                    
+                    try
+                    {
+                        //check if player is already signed up
+                        StreamReader sr = new StreamReader(fileName);
+                        string raidSum = sr.ReadLine();
+                        string roleLimits = sr.ReadLine();
+                        line = sr.ReadLine();
+
+                        //loop through file
+                        while (line != null)
+                        {
+                            if (user.Username == line)
+                            {
+                                playerFound = true;
+                                if (function.ToLower().Contains("remove"))
+                                {
+                                    //skip adding names and roles
+                                    line = sr.ReadLine();
+                                    sendmsg = $"{user.Username} removed from {raid} sign ups.";
+                                }
+                                else if (function.ToLower().Contains("edit"))
+                                {
+                                    //edit roles
+                                    string newRoles = function.ToLower().Replace("edit", "");
+                                    string updatedRoles = "";
+                                    if (newRoles.ToUpper().Contains("MDPS") || newRoles.ToUpper().Contains("MELEE")|| newRoles.ToUpper().Contains("MELE")|| newRoles.ToUpper().Contains("MELLE"))
+                                    {
+                                        updatedRoles += "mdps ";
+                                    }
+                                    if (newRoles.ToUpper().Contains("RDPS") || newRoles.ToUpper().Contains("RANGE")|| newRoles.ToUpper().Contains("RANGED"))
+                                    {
+                                        updatedRoles += "rdps ";
+                                    }
+                                    if (newRoles.ToUpper().Contains("HEALER") || newRoles.ToUpper().Contains("HEALS") || newRoles.ToUpper().Contains("HEAL"))
+                                    {
+                                        updatedRoles += "healer ";
+                                    }
+                                    if (newRoles.ToUpper().Contains("TANK"))
+                                    {
+                                        updatedRoles += "tank ";
+                                    }
+                                    if (updatedRoles == "")
+                                    {
+                                        updatedRoles = "mdps ";
+                                    }
+                                    names.Add(line);
+                                    roles.Add(updatedRoles);
+                                    line = sr.ReadLine();
+                                    sendmsg = $"{user.Username} roles updated to {updatedRoles}";
+                                }
+                            }
+                            else //line is not user
+                            {
+                                names.Add(line);
+                                line = sr.ReadLine();
+                                roles.Add(line);
+
+                            }
+                            line = sr.ReadLine();
+                        }
+                        sr.Close();
+                        //rewrite file if changes were made
+                        if (playerFound == true)
+                        {
+                            StreamWriter sw = new StreamWriter(fileName);
+                            sw.WriteLine(raidSum);
+                            sw.WriteLine(roleLimits);
+                            for (int x = 0; x < names.Count(); x++)
+                            {
+                                sw.WriteLine(names[x]);
+                                sw.WriteLine(roles[x]);
+                            }
+                            sw.Close();
+                        }
+                        if (playerFound == false)
+                        {
+                            if (function.ToLower().Contains("add"))
+                            {
+                                string newRoles = function.ToLower().Replace("add", "");
+                                string updatedRoles = "";
+                                //get roles
+                                if (newRoles.ToUpper().Contains("MDPS") || newRoles.ToUpper().Contains("MELEE")|| newRoles.ToUpper().Contains("MELE")|| newRoles.ToUpper().Contains("MELLE"))
+                                {
+                                    updatedRoles += "mdps ";
+                                }
+                                if (newRoles.ToUpper().Contains("RDPS") || newRoles.ToUpper().Contains("RANGE")|| newRoles.ToUpper().Contains("RANGED"))
+                                {
+                                    updatedRoles += "rdps ";
+                                }
+                                if (newRoles.ToUpper().Contains("HEALER") || newRoles.ToUpper().Contains("HEALS") || newRoles.ToUpper().Contains("HEAL"))
+                                {
+                                    updatedRoles += "healer ";
+                                }
+                                if (newRoles.ToUpper().Contains("TANK"))
+                                {
+                                    updatedRoles += "tank ";
+                                }
+                                if (updatedRoles == "")
+                                {
+                                    updatedRoles = "mdps ";
+                                }
+                                StreamWriter writer = new StreamWriter(@fileName, true);
+
+                                writer.WriteLine(user.Username);
+                                writer.WriteLine(updatedRoles);
+                                writer.Close();
+                                sendmsg = $"{user.Username} added to sign ups as {updatedRoles}";
+                            }
+                            else
+                            {
+                                sendmsg = $"{user.Username} not found in {raid} sign ups.";
+                            }
+                        }
+                        //rewrite names and roles to file                        
+                        await ReplyAsync(sendmsg);
+                    }
+                    catch (Exception e)
+                    {
+                        await ReplyAsync("Exception: " + e.Message);
+                    }
+                }
+            }
         }
     }
 }

@@ -37,7 +37,7 @@ namespace raidbot
             //define filepath
             string fileName = raid + ".txt";
             fileName = Path.GetFullPath(fileName).Replace(fileName, "");
-            fileName = fileName + @"raids\" + raid + ".txt";
+            fileName = fileName + @"raids\" + raid.ToLower() + ".txt";
 
             if (!File.Exists(fileName)) //file doesnt exist
             {
@@ -148,6 +148,10 @@ namespace raidbot
                         {
                             updatedRoles += "tank ";
                         }
+                        if (updatedRoles == "")
+                        {
+                            updatedRoles = "mdps ";
+                        }
 
                         //adds name and roles to file
                         try
@@ -188,7 +192,7 @@ namespace raidbot
             //define file path
             string fileName = raid + ".txt";
             fileName = Path.GetFullPath(fileName).Replace(fileName, "");
-            fileName = fileName + @"raids\" + raid + ".txt";
+            fileName = fileName + @"raids\" + raid.ToLower() + ".txt";
 
             int i = 0;
             List<string> names = new List<string>();
@@ -274,7 +278,7 @@ namespace raidbot
                 //define file path
                 string fileName = raid + ".txt";
                 fileName = Path.GetFullPath(fileName).Replace(fileName, "");
-                fileName = fileName + @"raids\" + raid + ".txt";
+                fileName = fileName + @"raids\" + raid.ToLower() + ".txt";
                 if (!File.Exists(fileName))
                 {
                     await ReplyAsync($"Raid for {raid} does not exist.");
@@ -407,7 +411,7 @@ namespace raidbot
                                 builder.AddField("Overflow:", players);
                             //add counts to footer
                             builder.WithFooter(footer => {
-                                footer.WithText(mdps + " mdps "+ rdps + " rdps " + tanks + " tanks " + heals + "heals , " + number + $"/{tankLimit + healLimit + mLimit + rLimit} signed up");
+                                footer.WithText(mdps + " mdps, "+ rdps + " rdps, " + tanks + " tanks, " + heals + " heals, " + number + $"/{tankLimit + healLimit + mLimit + rLimit} signed up");
                                 });
                             await Context.Channel.SendMessageAsync("", false, builder.Build()).ConfigureAwait(false);
                         }
@@ -490,63 +494,65 @@ namespace raidbot
                 {
                     newRoles += "healer ";
                 }
+                
                 if (newRoles == "") //roles given did not contain dps tank or heal
                 {
-                    newRoles = "mdps ";
+                    await ReplyAsync($"Error, {roles} is not a valid role.");
                 }
-
-                try
+                else
                 {
-                    //read defaults to see if default was already given
-                    StreamReader sr = new StreamReader("defaults.txt");
-                    line = sr.ReadLine();
-
-                    while (line != null)
+                    try
                     {
-                        if (Context.Message.Author.Username == line)
-                        {
-                            //if player is found, msg sends, skips saving name and roles for rewrite
-                            names.Add(line);
-                            defaults.Add(newRoles);
-                            line = sr.ReadLine();
-                            playerFound = true;
-                            i++;
-
-                        }
-                        else
-                        {
-                            //if not user, adds lines to names and roles for rewrite
-                            names.Add(line);
-                            line = sr.ReadLine();
-                            defaults.Add(line);
-                            i++;
-                        }
-
+                        //read defaults to see if default was already given
+                        StreamReader sr = new StreamReader("defaults.txt");
                         line = sr.ReadLine();
-                    }
-                    sr.Close();
 
-                    if (!playerFound) // user not already in defaults file
+                        while (line != null)
+                        {
+                            if (Context.Message.Author.Username == line)
+                            {
+                                //if player is found, msg sends, skips saving name and roles for rewrite
+                                names.Add(line);
+                                defaults.Add(newRoles);
+                                line = sr.ReadLine();
+                                playerFound = true;
+                                i++;
+
+                            }
+                            else
+                            {
+                                //if not user, adds lines to names and roles for rewrite
+                                names.Add(line);
+                                line = sr.ReadLine();
+                                defaults.Add(line);
+                                i++;
+                            }
+
+                            line = sr.ReadLine();
+                        }
+                        sr.Close();
+
+                        if (!playerFound) // user not already in defaults file
+                        {
+                            names.Add(Context.Message.Author.Username);
+                            defaults.Add(newRoles);
+                            i++;
+                        }
+
+                        //write names back into file
+                        StreamWriter sw = new StreamWriter("defaults.txt");
+                        for (int x = 0; x < i; x++)
+                        {
+                            sw.WriteLine(names[x]);
+                            sw.WriteLine(defaults[x]);
+                        }
+                        sw.Close();
+                        await ReplyAsync(Context.Message.Author.Username + " registered " + newRoles + "as default.");
+                    }
+                    catch (Exception e)
                     {
-                        names.Add(Context.Message.Author.Username);
-                        defaults.Add(newRoles);
-                        i++;
-
+                        await ReplyAsync("Exception: " + e.Message);
                     }
-
-                    //write names back into file
-                    StreamWriter sw = new StreamWriter("defaults.txt");
-                    for (int x = 0; x < i; x++)
-                    {
-                        sw.WriteLine(names[x]);
-                        sw.WriteLine(defaults[x]);
-                    }
-                    sw.Close();
-                    await ReplyAsync(Context.Message.Author.Username + " registered " + newRoles + "as default.");
-                }
-                catch (Exception e)
-                {
-                    await ReplyAsync("Exception: " + e.Message);
                 }
             }
         }
