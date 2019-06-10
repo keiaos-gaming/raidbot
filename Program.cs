@@ -15,14 +15,7 @@ namespace raidbot
     {
         // setup our fields we assign later
 
-        /*
-        {
-    "Token": "NTgzNzk0NDYyOTc5Nzg0NzA2.XPBlGA.tlVOda2pTPIrhP2LwYfk_4IcsHU",
-    "Prefix": "!",
-    "SignupsID": "583131333623021569",
-    "BotchannelID": "583137667693281280"
-}
-         */
+
         private readonly IConfiguration _config;
         private DiscordSocketClient _client;
 
