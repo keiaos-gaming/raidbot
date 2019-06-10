@@ -19,7 +19,6 @@ namespace raidbot
 {
     public class SignUp : ModuleBase
     {
-        int maxSignUps = 12;
         int tankLimit = 2;
         int healLimit = 2;
         int mLimit = 4;

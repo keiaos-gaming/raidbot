@@ -63,7 +63,7 @@ namespace raidbot
 
                 // we get the CommandHandler class here and call the InitializeAsync method to start things up for the CommandHandler service
                 await services.GetRequiredService<CommandHandler>().InitializeAsync();
-
+                await client.SetGameAsync("Sign up for raids you lazy bitches.");
                 await Task.Delay(-1);
             }
         }
