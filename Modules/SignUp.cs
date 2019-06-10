@@ -440,7 +440,7 @@ namespace raidbot
             foreach (string file in folder)
             {
                 string raid = file.Replace(".txt", "");
-                raid = raid.Replace(path + "//", "");
+                raid = raid.Replace(path , "");
                 sendmsg += raid + "\n";
             }
             var builder = new EmbedBuilder()
