@@ -15,7 +15,6 @@ namespace raidbot
     {
         // setup our fields we assign later
 
-
         private readonly IConfiguration _config;
         private DiscordSocketClient _client;
 
