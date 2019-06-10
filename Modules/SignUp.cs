@@ -37,7 +37,7 @@ namespace raidbot
             //define filepath
             string fileName = raid + ".txt";
             fileName = Path.GetFullPath(fileName).Replace(fileName, "");
-            fileName = fileName + @"raids\" + raid.ToLower() + ".txt";
+            fileName = fileName + "//raids//" + raid.ToLower() + ".txt";
 
             if (!File.Exists(fileName)) //file doesnt exist
             {
@@ -192,7 +192,7 @@ namespace raidbot
             //define file path
             string fileName = raid + ".txt";
             fileName = Path.GetFullPath(fileName).Replace(fileName, "");
-            fileName = fileName + @"raids\" + raid.ToLower() + ".txt";
+            fileName = fileName + "//raids//" + raid.ToLower() + ".txt";
 
             int i = 0;
             List<string> names = new List<string>();
@@ -278,7 +278,7 @@ namespace raidbot
                 //define file path
                 string fileName = raid + ".txt";
                 fileName = Path.GetFullPath(fileName).Replace(fileName, "");
-                fileName = fileName + @"raids\" + raid.ToLower() + ".txt";
+                fileName = fileName + "//raids//" + raid.ToLower() + ".txt";
                 if (!File.Exists(fileName))
                 {
                     await ReplyAsync($"Raid for {raid} does not exist.");
@@ -433,14 +433,14 @@ namespace raidbot
         public async Task RaidListCmd()
         {
             //define file path
-            string path = Path.GetFullPath("config.txt").Replace("config.txt", @"raids");
+            string path = Path.GetFullPath("config.txt").Replace("config.txt", @"raids/");
             string[] folder = Directory.GetFiles(path);
             string sendmsg = "";
             //loop through array and get names of files
             foreach (string file in folder)
             {
                 string raid = file.Replace(".txt", "");
-                raid = raid.Replace(path + "\\", "");
+                raid = raid.Replace(path + "//", "");
                 sendmsg += raid + "\n";
             }
             var builder = new EmbedBuilder()

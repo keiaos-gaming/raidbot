@@ -44,7 +44,7 @@ namespace raidbot.Modules
             
             string fileName = raid + ".txt";
             fileName = Path.GetFullPath(fileName).Replace(fileName, "");
-            fileName = fileName + @"raids\" + raid.ToLower() + ".txt";
+            fileName = fileName + "//raids//" + raid.ToLower() + ".txt";
             if (Context.Channel.Id != botChannel)
             {
                 await ReplyAsync($"Please use this command in {(await Context.Guild.GetChannelAsync(botChannel) as SocketTextChannel).Mention}");
@@ -136,7 +136,7 @@ namespace raidbot.Modules
 
                     string fileName = name + ".txt";
                     fileName = Path.GetFullPath(fileName).Replace(fileName, "");
-                    fileName = fileName + @"raids\" + name + ".txt";
+                    fileName = fileName + "//raids//" + name.ToLower() + ".txt";
                     if (!File.Exists(fileName))
                     {
                         sendmsg = "Error: " + fileName + " does not exist.";
@@ -177,7 +177,7 @@ namespace raidbot.Modules
                 List<string> tankList = new List<string>(), healerList= new List<string>(), mdpsList= new List<string>(), rdpsList= new List<string>(), overflow = new List<string>();
                 string fileName = raid + ".txt";
                 fileName = Path.GetFullPath(fileName).Replace(fileName, "");
-                fileName = fileName + @"raids\" + raid + ".txt";
+                fileName = fileName + "//raids//" + raid.ToLower() + ".txt";
                 int tankLimit = 2, healLimit = 2, mLimit = 4, rLimit = 4;
                 if (!File.Exists(fileName))
                 {
@@ -289,7 +289,7 @@ namespace raidbot.Modules
                                     }
                                 }
                             }
-                            catch(Exception e)
+                            catch(Exception )
                             {
                                 Console.WriteLine($"Player {line} in {raid}.txt not found in server.");
                             }
@@ -330,7 +330,7 @@ namespace raidbot.Modules
                 //define filepath
                 string fileName = raid + ".txt";
                 fileName = Path.GetFullPath(fileName).Replace(fileName, "");
-                fileName = fileName + @"raids\" + raid.ToLower() + ".txt";
+                fileName = fileName + "//raids//" + raid.ToLower() + ".txt";
 
                 if (!File.Exists(fileName)) //file doesnt exist
                 {
