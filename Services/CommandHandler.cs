@@ -59,6 +59,17 @@ namespace raidbot.Services
             // get prefix from the configuration file
             char prefix = Char.Parse(_config["Prefix"]);
 
+            //add some sass to the bot
+            if (message.ToString().ToLower().Contains("sucks")|| message.ToString().ToLower().Contains("suck"))
+            {
+                await message.Channel.SendMessageAsync("I mean, you can think that.");
+            }
+
+            if (message.ToString().ToLower().Contains("no u"))
+            {
+                await message.Channel.SendMessageAsync("no u");
+            }
+
             // determine if the message has a valid prefix, and adjust argPos based on prefix
             if (!(message.HasMentionPrefix(_client.CurrentUser, ref argPos) || message.HasCharPrefix(prefix, ref argPos))) 
             {

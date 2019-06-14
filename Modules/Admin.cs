@@ -22,6 +22,7 @@ namespace raidbot.Modules
         //need _services to access config file
         private readonly IServiceProvider _services;
         private readonly IConfiguration _config;
+        public EditingFunctions _editFunctions = new EditingFunctions();
 
         ulong signupsID;
         ulong botChannel;
@@ -66,34 +67,7 @@ namespace raidbot.Modules
                 File.Create(fileName).Close();
                 
                 //get leader defaults
-                bool defaultFound = false;
-                string line = "", roles = "";
-                try
-                {
-                    //search defaults for user
-                    StreamReader sr = new StreamReader("defaults.txt");
-                    line = sr.ReadLine();
-                    while (line != null)
-                    {
-                        if (Context.Message.Author.Username == line)
-                        {
-                                    //user found roles are saved
-                            defaultFound = true;
-                            roles = sr.ReadLine();
-                        }
-                        line = sr.ReadLine();
-                    }
-
-                    if (!defaultFound) // not found in defaults.txt, uses dps as default
-                    {
-                        roles = "mdps ";
-                    }
-                    sr.Close();
-                }
-                catch (Exception e)
-                {
-                    await ReplyAsync("Exception: " + e.Message);
-                }
+                string roles = _editFunctions.getDefaults(Context.Message.Author.Username);
 
                 string roleLimits = "";
                 //add role limits if all are specified
@@ -101,7 +75,6 @@ namespace raidbot.Modules
                 {
                     roleLimits = $"{tankLimit.ToString()} {healLimit.ToString()} {mdpsLimit.ToString()} {rdpsLimit.ToString()}";
                 }
-
                 //write summary to file, write first signup as person who opened raid
                 string[] lines = {message, roleLimits, Context.Message.Author.Username, roles};
                 File.WriteAllLines(fileName,lines);
@@ -288,13 +261,29 @@ namespace raidbot.Modules
                                         plyr = null;
                                     }
                                 }
+                                sendmsg += $"forming up for {raid}, time to log in!";
+                                if (overflow.Count() != 0)
+                                    sendmsg += "\n";
+                                foreach (string backup in overflow)
+                                {
+                                    plyr = users.Where(x => x.Username == backup).First() as SocketUser;
+                                    if (plyr != null)
+                                    {
+                                        sendmsg = sendmsg  + plyr.Mention + ", ";
+                                        plyr = null;
+                                    }
+                                }
+                                if (overflow.Count() != 0)
+                                {
+                                    sendmsg += "standby as backups.";
+                                }
                             }
                             catch(Exception )
                             {
                                 Console.WriteLine($"Player {line} in {raid}.txt not found in server.");
                             }
                             var channel = await Context.Guild.GetChannelAsync(signupsID) as SocketTextChannel;
-                            await channel.SendMessageAsync ($"{sendmsg}forming up for {raid}, time to log in!");
+                            await channel.SendMessageAsync (sendmsg);
                         }
                         sr.Close();
                     }
@@ -338,127 +327,101 @@ namespace raidbot.Modules
                 }
                 else
                 {
-                    
-                    try
+                    playerFound = _editFunctions.searchFile(user.Username, fileName);
+                    if (function.ToLower().Contains("remove"))
                     {
-                        //check if player is already signed up
-                        StreamReader sr = new StreamReader(fileName);
-                        string raidSum = sr.ReadLine();
-                        string roleLimits = sr.ReadLine();
-                        line = sr.ReadLine();
-
-                        //loop through file
-                        while (line != null)
+                        if (playerFound)
                         {
-                            if (user.Username == line)
+                            bool success = _editFunctions.removePlayer(fileName, user.Username);
+                            if (success)
                             {
-                                playerFound = true;
-                                if (function.ToLower().Contains("remove"))
-                                {
-                                    //skip adding names and roles
-                                    line = sr.ReadLine();
-                                    sendmsg = $"{user.Username} removed from {raid} sign ups.";
-                                }
-                                else if (function.ToLower().Contains("edit"))
-                                {
-                                    //edit roles
-                                    string newRoles = function.ToLower().Replace("edit", "");
-                                    string updatedRoles = "";
-                                    if (newRoles.ToUpper().Contains("MDPS") || newRoles.ToUpper().Contains("MELEE")|| newRoles.ToUpper().Contains("MELE")|| newRoles.ToUpper().Contains("MELLE"))
-                                    {
-                                        updatedRoles += "mdps ";
-                                    }
-                                    if (newRoles.ToUpper().Contains("RDPS") || newRoles.ToUpper().Contains("RANGE")|| newRoles.ToUpper().Contains("RANGED"))
-                                    {
-                                        updatedRoles += "rdps ";
-                                    }
-                                    if (newRoles.ToUpper().Contains("HEALER") || newRoles.ToUpper().Contains("HEALS") || newRoles.ToUpper().Contains("HEAL"))
-                                    {
-                                        updatedRoles += "healer ";
-                                    }
-                                    if (newRoles.ToUpper().Contains("TANK"))
-                                    {
-                                        updatedRoles += "tank ";
-                                    }
-                                    if (updatedRoles == "")
-                                    {
-                                        updatedRoles = "mdps ";
-                                    }
-                                    names.Add(line);
-                                    roles.Add(updatedRoles);
-                                    line = sr.ReadLine();
-                                    sendmsg = $"{user.Username} roles updated to {updatedRoles}";
-                                }
+                                sendmsg = $"{user.Username} removed from {raid} sign ups.";
                             }
-                            else //line is not user
+                            else
                             {
-                                names.Add(line);
-                                line = sr.ReadLine();
-                                roles.Add(line);
-
+                                sendmsg = "Error, something went wrong.";
                             }
-                            line = sr.ReadLine();
                         }
-                        sr.Close();
-                        //rewrite file if changes were made
-                        if (playerFound == true)
+                        else
                         {
-                            StreamWriter sw = new StreamWriter(fileName);
-                            sw.WriteLine(raidSum);
-                            sw.WriteLine(roleLimits);
-                            for (int x = 0; x < names.Count(); x++)
-                            {
-                                sw.WriteLine(names[x]);
-                                sw.WriteLine(roles[x]);
-                            }
-                            sw.Close();
+                            sendmsg = $"{user.Username} not found in {raid} sign ups.";
                         }
-                        if (playerFound == false)
+                    }
+                    else if (function.ToLower().Contains("add"))
+                    {
+                        if (!playerFound)
                         {
-                            if (function.ToLower().Contains("add"))
+                            string newRoles = function.ToLower().Replace("add", "");
+                            string updatedRoles = _editFunctions.formatRoles(newRoles);
+                            bool success = _editFunctions.addName(fileName, user.Username, updatedRoles);
+                            if (success)
                             {
-                                string newRoles = function.ToLower().Replace("add", "");
-                                string updatedRoles = "";
-                                //get roles
-                                if (newRoles.ToUpper().Contains("MDPS") || newRoles.ToUpper().Contains("MELEE")|| newRoles.ToUpper().Contains("MELE")|| newRoles.ToUpper().Contains("MELLE"))
-                                {
-                                    updatedRoles += "mdps ";
-                                }
-                                if (newRoles.ToUpper().Contains("RDPS") || newRoles.ToUpper().Contains("RANGE")|| newRoles.ToUpper().Contains("RANGED"))
-                                {
-                                    updatedRoles += "rdps ";
-                                }
-                                if (newRoles.ToUpper().Contains("HEALER") || newRoles.ToUpper().Contains("HEALS") || newRoles.ToUpper().Contains("HEAL"))
-                                {
-                                    updatedRoles += "healer ";
-                                }
-                                if (newRoles.ToUpper().Contains("TANK"))
-                                {
-                                    updatedRoles += "tank ";
-                                }
-                                if (updatedRoles == "")
-                                {
-                                    updatedRoles = "mdps ";
-                                }
-                                StreamWriter writer = new StreamWriter(@fileName, true);
-
-                                writer.WriteLine(user.Username);
-                                writer.WriteLine(updatedRoles);
-                                writer.Close();
                                 sendmsg = $"{user.Username} added to sign ups as {updatedRoles}";
                             }
                             else
                             {
-                                sendmsg = $"{user.Username} not found in {raid} sign ups.";
+                                sendmsg = "Error, something went wrong.";
                             }
                         }
-                        //rewrite names and roles to file                        
-                        await ReplyAsync(sendmsg);
+                        else
+                        {
+                            sendmsg = $"{user.Username} already signed up, use edit instead of add with this command.";
+                        }
                     }
-                    catch (Exception e)
+                    else if (function.ToLower().Contains("edit"))
                     {
-                        await ReplyAsync("Exception: " + e.Message);
+                        if (playerFound)
+                        {
+                            string newRoles = function.ToLower().Replace("edit", "");
+                            string updatedRoles = _editFunctions.formatRoles(newRoles);
+                            try
+                            {
+                                StreamReader sr = new StreamReader(fileName);
+                                string raidSum = sr.ReadLine();
+                                string roleLimits = sr.ReadLine();
+                                line = sr.ReadLine();
+
+                                //loop through file
+                                while (line != null)
+                                {
+                                    if (user.Username == line)
+                                    {
+                                        names.Add(line);
+                                        line = sr.ReadLine();
+                                        roles.Add(updatedRoles);
+                                    }
+                                    else
+                                    {
+                                        names.Add(line);
+                                        line = sr.ReadLine();
+                                        roles.Add(line);
+                                    }
+                                    line = sr.ReadLine();
+                                }
+                                sr.Close();
+
+                                StreamWriter sw = new StreamWriter(fileName);
+                                sw.WriteLine(raidSum);
+                                sw.WriteLine(roleLimits);
+                                for (int x = 0; x < names.Count(); x++)
+                                {
+                                    sw.WriteLine(names[x]);
+                                    sw.WriteLine(roles[x]);
+                                }
+                                sw.Close();
+                                sendmsg = $"{user.Username} roles updated to {updatedRoles}";
+                            }
+                            catch (Exception e)
+                            {
+                                await ReplyAsync("Error: " + e.Message);
+                            }
+                        }
+                        else 
+                        {
+                            sendmsg = $"{user.Username} not found in {raid} sign ups.";
+                        }
                     }
+                    await ReplyAsync(sendmsg);
                 }
             }
         }

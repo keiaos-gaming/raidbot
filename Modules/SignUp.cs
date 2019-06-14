@@ -19,6 +19,8 @@ namespace raidbot
 {
     public class SignUp : ModuleBase
     {
+        public EditingFunctions _editFunctions = new EditingFunctions();
+
         int tankLimit = 2;
         int healLimit = 2;
         int mLimit = 4;
@@ -29,9 +31,8 @@ namespace raidbot
         [Summary("Signs user up for specified raid with specified roles.")]
         public async Task SignUpCmd([Summary("Raid to sign up for")]string raid, [Summary("Roles you wish to sign up with for raid."),Remainder]string roles = null)
         {
-            int signUps = 0;
-            bool playerAllowed = true;
-            string line = "", sendmsg = "";
+            bool playerFound = false;
+            string sendmsg = "";
 
             //define filepath
             string fileName = raid + ".txt";
@@ -44,137 +45,27 @@ namespace raidbot
             }
             else
             {
-                try
-                {
-                    //check if player is already signed up
-                    StreamReader sr = new StreamReader(fileName);
-                    line = sr.ReadLine();
-                    //skip first line (summary)
-                    line = sr.ReadLine();
-                    //skip role limits
-                    line = sr.ReadLine();
+                playerFound = _editFunctions.searchFile(Context.Message.Author.Username, fileName);
 
-                    //loop through file
-                    while (line != null)
-                    {
-                        if (Context.Message.Author.Username == line)
-                        {
-                            //if player is found, msg sends and skips sign up process
-                            sendmsg = "Only one signup allowed per person. You have already signed up.";
-                            playerAllowed = false;
-                        }
-                        signUps++;
-                        line = sr.ReadLine();
-                    }
-                    sr.Close();
-                    signUps = (signUps) / 2;
-                }
-                catch (Exception e)
+                if (!playerFound) // player not found in signup
                 {
-                    await ReplyAsync("Exception: " + e.Message);
-                }
-
-                if (playerAllowed) // player not found in signup
-                {
+                    string updatedRoles = "";
                     if (roles == null) // roles omitted, use defaults
                     {
-                        bool defaultFound = false;
-                        try
-                        {
-                            //search defaults for user
-                            StreamReader sr = new StreamReader("defaults.txt");
-                            line = sr.ReadLine();
-                            while (line != null)
-                            {
-                                if (Context.Message.Author.Username == line)
-                                {
-                                    //user found roles are saved
-                                    defaultFound = true;
-                                    roles = sr.ReadLine();
-                                }
-                                line = sr.ReadLine();
-                            }
-
-                            if (!defaultFound) // not found in defaults.txt, uses dps as default
-                            {
-                                roles = "mdps ";
-                            }
-                            sr.Close();
-                        }
-                        catch (Exception e)
-                        {
-                            await ReplyAsync("Exception: " + e.Message);
-                        }
-
-                        //adds names to sign up file
-                        try
-                        {
-                            StreamWriter sw = new StreamWriter(@fileName, true);
-
-                            //Write a line of text
-                            sw.WriteLine(Context.Message.Author.Username);
-                            sw.WriteLine(roles);
-                            //close the file
-                            sw.Close();
-                        }
-                        catch (Exception e)
-                        {
-                            await ReplyAsync("Exception: " + e.Message);
-                        }
-
-                        sendmsg = Context.Message.Author.Username + " has signed up as " + roles;
-
+                        updatedRoles = _editFunctions.getDefaults(Context.Message.Author.Username);
                     }
-
                     //user gives roles
                     else
                     {
                         //format roles for writing
-                        string updatedRoles = "";
-                        if (roles.ToUpper().Contains("MDPS") || roles.ToUpper().Contains("MELEE")|| roles.ToUpper().Contains("MELE")|| roles.ToUpper().Contains("MELLE"))
-                        {
-                            updatedRoles += "mdps ";
-                        }
-                        if (roles.ToUpper().Contains("RDPS") || roles.ToUpper().Contains("RANGE")|| roles.ToUpper().Contains("RANGED"))
-                        {
-                            updatedRoles += "rdps ";
-                        }
-                        if (roles.ToUpper().Contains("HEALER") || roles.ToUpper().Contains("HEALS") || roles.ToUpper().Contains("HEAL"))
-                        {
-                            updatedRoles += "healer ";
-                        }
-                        if (roles.ToUpper().Contains("TANK"))
-                        {
-                            updatedRoles += "tank ";
-                        }
-                        if (updatedRoles == "")
-                        {
-                            updatedRoles = "mdps ";
-                        }
-
-                        //adds name and roles to file
-                        try
-                        {
-                            StreamWriter sw = new StreamWriter(@fileName, true);
-
-                            sw.WriteLine(Context.Message.Author.Username);
-                            sw.WriteLine(updatedRoles);
-                            sw.Close();
-                        }
-                        catch (Exception e)
-                        {
-                            await ReplyAsync("Exception: " + e.Message);
-                        }
-
-                        sendmsg = Context.Message.Author.Username + " has signed up as " + updatedRoles;
-
+                        updatedRoles = _editFunctions.formatRoles(roles);
                     }
-
-                    //if raid is full 
-                    if (signUps >= (tankLimit + healLimit + mLimit + rLimit))
-                    {
-                        sendmsg += "\nRaid is full! Signed up as overflow.";
-                    }
+                    _editFunctions.addName(fileName, Context.Message.Author.Username, updatedRoles);
+                    sendmsg = Context.Message.Author.Username + " has signed up as " + updatedRoles;
+                }
+                else
+                {
+                    sendmsg = "Error, only one sign up allowed per player. Use !withdraw (raid) and sign up again.";
                 }
             }
             await ReplyAsync(sendmsg);
@@ -184,69 +75,32 @@ namespace raidbot
         [Summary("Withdraws user from specified raid if signed up.")]
         public async Task WithdrawCmd([Summary("Raid to withdraw from")] string raid = null)
         {
-            String line;
             string sendmsg = "";
-            string raidSum, roleLimits;
 
             //define file path
             string fileName = raid + ".txt";
             fileName = Path.GetFullPath(fileName).Replace(fileName, "");
             fileName = fileName + "//raids//" + raid.ToLower() + ".txt";
 
-            int i = 0;
-            List<string> names = new List<string>();
-            List<string> roles = new List<string>();
             bool playerFound = false;
 
             if (raid != null && File.Exists(fileName)) //command is correct and file exists
             {
                 //read sign up list to see if player has already registered
-                try
+                playerFound = _editFunctions.searchFile(Context.Message.Author.Username, fileName);
+                if (playerFound)
                 {
-                    StreamReader sr = new StreamReader(fileName);
-                    raidSum = sr.ReadLine();
-                    roleLimits = sr.ReadLine();
-                    line = sr.ReadLine();
-
-                    //loop through file
-                    while (line != null)
+                    bool success = _editFunctions.removePlayer(fileName, Context.Message.Author.Username);
+                    if (success)
                     {
-                        if (Context.Message.Author.Username == line)
-                        {
-                            //if player is found, msg sends, skips saving name and roles for rewrite
-                            sendmsg = Context.Message.Author.Username + " removed from " + raid + " signups.";
-                            line = sr.ReadLine();
-                            playerFound = true;
-                        }
-                        else
-                        {
-                            //if not user, adds lines to names and roles for rewrite
-                            names.Add(line);
-                            line = sr.ReadLine();
-                            roles.Add(line);
-                            i++;
-                        }
-
-                        line = sr.ReadLine();
+                        sendmsg = Context.Message.Author.Username + " removed from " + raid + " signups.";
                     }
-                    sr.Close();
-
-                    //rewrite names and roles to file
-                    StreamWriter sw = new StreamWriter(fileName);
-                    sw.WriteLine(raidSum);
-                    sw.WriteLine(roleLimits);
-                    for (int x = 0; x < i; x++)
+                    else //something went wrong in removal process
                     {
-                        sw.WriteLine(names[x]);
-                        sw.WriteLine(roles[x]);
+                        sendmsg = "Error, something went wrong in withdraw process, contact Keiaos and tell her you broke the bot.";
                     }
-                    sw.Close();
                 }
-                catch (Exception e)
-                {
-                    await ReplyAsync("Exception: " + e.Message);
-                }
-                if (!playerFound) //user not in file
+                else //player not in signups
                 {
                     sendmsg = "Player not found in signup list.";
                 }
@@ -259,7 +113,6 @@ namespace raidbot
             {
                 sendmsg = "Error: " + raid + " raid doesn't exist";
             }
-
             await ReplyAsync(sendmsg);
         }
 
