@@ -46,6 +46,55 @@ public class EditingFunctions
         return false;
     }
 
+    public bool editRoles(string name, string raid, string newRoles)
+    {
+        string line = "";
+        List<string> names = new List<string>();
+        List<string> roles = new List<string>();
+
+        try
+        {
+            StreamReader sr = new StreamReader(raid);
+            string raidSum = sr.ReadLine();
+            string roleLimits = sr.ReadLine();
+            line = sr.ReadLine();
+
+            //loop through file
+            while (line != null)
+            {
+                if (name == line)
+                {
+                    names.Add(line);
+                    line = sr.ReadLine();
+                    roles.Add(newRoles);
+                }
+                else
+                {
+                    names.Add(line);
+                    line = sr.ReadLine();
+                    roles.Add(line);
+                }
+                line = sr.ReadLine();
+            }
+            sr.Close();
+
+            StreamWriter sw = new StreamWriter(raid);
+            sw.WriteLine(raidSum);
+            sw.WriteLine(roleLimits);
+            for (int x = 0; x < names.Count(); x++)
+            {
+                sw.WriteLine(names[x]);
+                sw.WriteLine(roles[x]);
+            }
+            sw.Close();
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+        return true;
+    }
+
     public string getDefaults (string name)
     {
         string line = "";

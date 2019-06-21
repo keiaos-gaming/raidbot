@@ -64,10 +64,21 @@ namespace raidbot.Services
             {
                 await message.Channel.SendMessageAsync("I mean, you can think that.");
             }
-
-            if (message.ToString().ToLower().Contains("no u"))
+            else if (message.ToString().ToLower().Contains("no u"))
             {
                 await message.Channel.SendMessageAsync("no u");
+            }
+            else if (message.ToString().ToLower().Contains("fuck you") || message.ToString().ToLower().Contains("fuck u"))
+            {
+                await message.Channel.SendMessageAsync("u wot m8");
+            }
+            else if (message.ToString().ToLower().Contains("bad bot"))
+            {
+                await message.Channel.SendMessageAsync("Sorry.");
+            }
+            else if (message.ToString().ToLower().Contains("real bot"))
+            {
+                await message.Channel.SendMessageAsync("*I'm a real boy... I mean bot.*");
             }
 
             // determine if the message has a valid prefix, and adjust argPos based on prefix

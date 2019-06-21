@@ -71,6 +71,55 @@ namespace raidbot
             await ReplyAsync(sendmsg);
         }
 
+        [Command("change")]
+        [Alias("changeroles")]
+        [Summary("Changes user sign up for specified raid to specified roles.")]
+        public async Task ChangeRolesCmd([Summary("Raid to edit roles for")]string raid, [Summary("Roles you wish to change to."),Remainder]string roles = null)
+        {
+            bool playerFound = false;
+            string sendmsg = "";
+
+            //define filepath
+            string fileName = raid + ".txt";
+            fileName = Path.GetFullPath(fileName).Replace(fileName, "");
+            fileName = fileName + "//raids//" + raid.ToLower() + ".txt";
+
+            if (!File.Exists(fileName)) //file doesnt exist
+            {
+                sendmsg = ($"Raid for {raid} doesn't exist!");
+            }
+            else
+            {
+                playerFound = _editFunctions.searchFile(Context.Message.Author.Username, fileName);
+
+                if (playerFound) // player found in signup
+                {
+                    if (roles == null) // roles omitted
+                    {
+                        sendmsg = "Error, please provide which roles you wish to change to.";
+                    }
+                    else
+                    {
+                        string updatedRoles = _editFunctions.formatRoles(roles);
+                        bool success = _editFunctions.editRoles(Context.Message.Author.Username, fileName, updatedRoles);
+                        if (success)
+                        {
+                            sendmsg = $"{Context.Message.Author.Username} roles updated to {updatedRoles}";
+                        }
+                        else
+                        {
+                            sendmsg = "Error, something went wrong in edit process.";
+                        }
+                    }                    
+                }
+                else
+                {
+                    sendmsg = "Error, player not found in sign ups. Use command !signup instead.";
+                }
+            }
+            await ReplyAsync(sendmsg);
+        }
+
         [Command("withdraw")]
         [Summary("Withdraws user from specified raid if signed up.")]
         public async Task WithdrawCmd([Summary("Raid to withdraw from")] string raid = null)
@@ -263,7 +312,7 @@ namespace raidbot
                                 builder.AddField("Overflow:", players);
                             //add counts to footer
                             builder.WithFooter(footer => {
-                                footer.WithText(mdps + " mdps, "+ rdps + " rdps, " + tanks + " tanks, " + heals + " heals, " + number + $"/{tankLimit + healLimit + mLimit + rLimit} signed up");
+                                footer.WithText($"{tanks}/{tankLimit} tanks, {heals}/{healLimit} healers, {rdps}/{rLimit} ranged, {mdps}/{mLimit} melee, {number}/{tankLimit + healLimit + mLimit + rLimit} signed up");
                                 });
                             await Context.Channel.SendMessageAsync("", false, builder.Build()).ConfigureAwait(false);
                         }

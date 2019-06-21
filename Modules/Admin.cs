@@ -33,8 +33,14 @@ namespace raidbot.Modules
             botChannel = Convert.ToUInt64(_config["BotchannelID"]);
            
         }
-        
-        //TO DO: add some way to get role limits, null if not provided
+
+        [Command("say")]
+        [Summary("Become the Speaker for the bot. (make the bot say something)")]
+        [RequireUserPermission(GuildPermission.Administrator)]
+        public async Task SayCmd([Summary("Channel to have the bot speak in.")] SocketTextChannel channel = null, [Remainder, Summary("What you want the bot to say.")] string message = null)
+        {
+            await channel.SendMessageAsync(message);
+        }
         
         [Command("openraid")]
         [Alias("open", "or")]
@@ -218,7 +224,7 @@ namespace raidbot.Modules
                                 }
                                 else
                                 {
-                                    overflow.Add($"{player}: {line}");
+                                    overflow.Add(player);
                                 }
                             
                                 line = sr.ReadLine();
@@ -263,24 +269,27 @@ namespace raidbot.Modules
                                 }
                                 sendmsg += $"forming up for {raid}, time to log in!";
                                 if (overflow.Count() != 0)
+                                {
                                     sendmsg += "\n";
-                                foreach (string backup in overflow)
-                                {
-                                    plyr = users.Where(x => x.Username == backup).First() as SocketUser;
-                                    if (plyr != null)
+                                    foreach (string backup in overflow)
                                     {
-                                        sendmsg = sendmsg  + plyr.Mention + ", ";
-                                        plyr = null;
+                                        plyr = users.Where(x => x.Username == backup).First() as SocketUser;
+                                        if (plyr != null)
+                                        {
+                                            sendmsg = sendmsg  + plyr.Mention + ", ";
+                                            plyr = null;
+                                        }
                                     }
-                                }
-                                if (overflow.Count() != 0)
-                                {
-                                    sendmsg += "standby as backups.";
+                                    if (overflow.Count() != 0)
+                                    {
+                                        sendmsg += "standby as backups.";
+                                    }
                                 }
                             }
                             catch(Exception )
                             {
-                                Console.WriteLine($"Player {line} in {raid}.txt not found in server.");
+                                await ReplyAsync($"Player {line} in {raid}.txt not found in server.");
+                                sr.Close();
                             }
                             var channel = await Context.Guild.GetChannelAsync(signupsID) as SocketTextChannel;
                             await channel.SendMessageAsync (sendmsg);
@@ -374,46 +383,14 @@ namespace raidbot.Modules
                         {
                             string newRoles = function.ToLower().Replace("edit", "");
                             string updatedRoles = _editFunctions.formatRoles(newRoles);
-                            try
+                            bool success = _editFunctions.editRoles(user.Username, fileName, updatedRoles);
+                            if (success)
                             {
-                                StreamReader sr = new StreamReader(fileName);
-                                string raidSum = sr.ReadLine();
-                                string roleLimits = sr.ReadLine();
-                                line = sr.ReadLine();
-
-                                //loop through file
-                                while (line != null)
-                                {
-                                    if (user.Username == line)
-                                    {
-                                        names.Add(line);
-                                        line = sr.ReadLine();
-                                        roles.Add(updatedRoles);
-                                    }
-                                    else
-                                    {
-                                        names.Add(line);
-                                        line = sr.ReadLine();
-                                        roles.Add(line);
-                                    }
-                                    line = sr.ReadLine();
-                                }
-                                sr.Close();
-
-                                StreamWriter sw = new StreamWriter(fileName);
-                                sw.WriteLine(raidSum);
-                                sw.WriteLine(roleLimits);
-                                for (int x = 0; x < names.Count(); x++)
-                                {
-                                    sw.WriteLine(names[x]);
-                                    sw.WriteLine(roles[x]);
-                                }
-                                sw.Close();
                                 sendmsg = $"{user.Username} roles updated to {updatedRoles}";
                             }
-                            catch (Exception e)
+                            else
                             {
-                                await ReplyAsync("Error: " + e.Message);
+                                sendmsg = "Error, something went wrong in edit process.";
                             }
                         }
                         else 
