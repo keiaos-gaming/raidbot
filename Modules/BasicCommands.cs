@@ -111,8 +111,7 @@ namespace raidbot.Modules
                 await ReplyAsync("", false, builder.Build());
             }
         }
-
-        //more commands under here
+/*
         [Command("test")]
         [Summary("Dev purposes only. Tests options in config file.")]
         public async Task ServerTest()
@@ -123,6 +122,123 @@ namespace raidbot.Modules
             var suchannel = await Context.Guild.GetChannelAsync(SignupsID) as SocketTextChannel;
             var botchannel = await Context.Guild.GetChannelAsync(BotchannelID) as SocketTextChannel;
             await ReplyAsync($"Prefix: '{Prefix}' \nRaid signups channel: {suchannel.Mention} \nBot channel: {botchannel.Mention}");
+        }
+*/
+
+        [Command("meme")]
+        [Alias("camelcase")]
+        [Summary("hAvE tHe BoT dO tHiS.")]
+        public async Task MemeCmd([Remainder, Summary("Message to do the thing.")] string message = null)
+        {
+            if (message == null)
+            {
+                await ReplyAsync("wAt dO yOu WaNt mE tO sAy.");
+            }
+            else
+            {
+                char[] charArray = message.ToCharArray();
+                string formatedMsg = "";
+                bool upperCase = false;
+                foreach(char ch in charArray)
+                {
+                    if (ch != ' ' && (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z'))
+                    {
+                        if (upperCase)
+                        {
+                            formatedMsg += ch.ToString().ToUpper();
+                        }
+                        else
+                        {
+                            formatedMsg += ch.ToString().ToLower();
+                        }
+                        upperCase = !upperCase;
+                    }
+                    else 
+                        formatedMsg += ch;
+                }
+                await ReplyAsync(formatedMsg);
+            }
+        }
+
+        [Command("cp")]
+        [Alias("championpoints")]
+        [Summary("Suggested CP for raids")]
+        public async Task CPCmd([Summary("Specific raid to get CP set up for. Use abbreviated raid names.")] string raid, [Remainder, Summary("Role to get CP for. Valid roles are: Tank, Off Tank (CR only), Healer, Healer kite (CR only), DPS, DPS Bottom (CR only), DPS Top (CR only)")] string role = null)
+        {
+            if (raid.ToLower().Contains('v'))
+            {
+                raid = raid.Replace("v", "");
+            }
+            if (raid.ToLower() == "maw")
+            {
+                raid = "mol";
+            }
+            string  green = "", red = "", raidName = "";
+            string fileName = raid + ".txt";
+            fileName = Path.GetFullPath(fileName).Replace(fileName, "");
+            fileName = fileName + "//cp//" + raid.ToLower() + ".txt";
+            if (!File.Exists(fileName))
+            {
+                await ReplyAsync($"CP set up for {raid} not found.");
+            }
+            else if (role == null)
+            {
+                await ReplyAsync("Error please provide the role to get CP for.");
+            }
+            else
+            {
+                try
+                {
+                    string line = "";
+                    StreamReader sr = new StreamReader(fileName);
+                    line = sr.ReadLine();
+                    raidName = line;
+                    while (line !=null)
+                    {
+                        if (line.ToLower() == role.ToLower())
+                        {
+                            line = sr.ReadLine();
+                            line = sr.ReadLine();
+                            while (!line.ToLower().Contains("red cp"))
+                            {
+                                green += line + "\n";
+                                line = sr.ReadLine();
+                            }
+                            line = sr.ReadLine();
+                            while(line != "")
+                            {
+                                red += line + "\n";
+                                line = sr.ReadLine();
+                            }
+                        }
+                        line = sr.ReadLine();
+                    }
+                    sr.Close();
+                }
+                catch (Exception e)
+                {
+                    await ReplyAsync ("Error: " + e.Message);
+                }
+                if (green == "" || red == "")
+                {
+                    await ReplyAsync("Error, role not found in CP file.");
+                }
+                else
+                {
+                    //do the embed
+                    var builder = new EmbedBuilder()
+	                    .WithColor(new Color(0x6AF65))
+	                    .WithAuthor(author => {
+		                    author
+			                .WithName($"Champion Points for {raidName} for {role}");
+	                    })
+	                    .AddField("Red CP", red, true)
+	                    .AddField("Green CP", green, true);
+                    var embed = builder.Build();
+                    await Context.Channel.SendMessageAsync("", false, builder.Build()).ConfigureAwait(false);
+                }
+            }
+            
         }
 
         [Command("meow")]

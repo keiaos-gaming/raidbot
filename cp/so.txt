@@ -1,0 +1,45 @@
+Sanctum Ophidia
+DPS
+Green CP
+26 Warlord
+35 Sprinter
+64 Arcanist/Mooncalf
+43 Tenacity
+51 Tumbling
+51 Shadow Ward
+Red CP
+72 Ironclad
+25 Medium Armor Focus/Light Armor Focus
+64 Hardy
+43 Elemental Defender
+66 Thick Skinned
+
+Healer
+Green CP
+26 Warlord
+35 Sprinter
+64 Arcanist
+43 Tenacity
+51 Tumbling
+51 Shadow Ward
+Red CP
+72 Ironclad
+25 Light Armor Focus
+64 Hardy
+43 Elemental Defender
+66 Thick Skinned
+
+Tank
+Green CP
+56 Warlord
+47 Sprinter
+39 Tenacity
+56 Tumbling
+72 Shadow Ward
+Red CP
+81 Ironclad
+64 Hardy
+43 Elemental Defender
+66 Thick Skinned
+16 Heavy Armor Focus/16 Quick Recovery
+

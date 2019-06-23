@@ -1,0 +1,46 @@
+Halls of Fabrication
+DPS
+Green CP
+23 Warlord
+19 Sprinter
+64 Arcanist/Mooncalf
+64 Tenacity
+56 Tumbling
+44 Shadow Ward
+Red CP
+81 Ironclad
+10 Medium/Light Armor Focus
+49 Hardy
+49 Elemental Defender
+81 Thick Skinned
+
+Healer
+Green CP
+40 Warlord
+22 Sprinter
+64 Arcanist
+37 Tenacity
+51 Tumbling
+56 Shadow Ward
+Red CP
+81 Ironclad
+10 Medium/Light Armor Focus
+49 Hardy
+49 Elemental Defender
+81 Thick Skinned
+
+Tank
+Green CP
+56 Warlord
+35 Sprinter
+Arcanist Preference
+43 Tenacity
+56 Tumbling
+72 Shadow Ward
+Red CP
+81 Ironclad
+56 Hardy
+56 Elemental Defender
+66 Thick Skinned
+11 Heavy Armor Focus
+

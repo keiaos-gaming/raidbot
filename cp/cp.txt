@@ -1,0 +1,510 @@
+Hel Ra Citadel
+DPS
+Green CP
+26 Warlord
+16 Sprinter
+16 Bashing Focus
+64 Tenacity
+64 Mooncalf/Arcanist
+23 Tumbling
+61 Shadow Ward
+Red CP
+81 Ironclad
+16 Spell Shield
+56 Hardy
+56 Elemental Defender
+61 Thick Skinned
+
+Healer
+Green CP
+56 Warlord
+27 Sprinter
+32 Tenacity
+64 Arcanist
+51 Tumbling
+40 Shadow Ward
+Red CP
+72 Ironclad
+17 Light Armor Focus
+61 Thick Skinned
+64 Hardy
+56 Elemental Defender
+
+Tank
+Green CP
+46 Warlord
+16 Sprinter
+16 Bashing Focus
+64 Tenacity
+Arcanist Preference
+56 Tumbling
+72 Shadow Ward
+Red CP
+81 Ironclad
+64 Hardy
+37 Elemental defender
+61 Thick Skinned
+27 Heavy Armor Focus
+
+Aetherian Archive
+DPS
+Green CP
+37 Warlord
+75 Arcanist/Mooncalf
+64 Tenacity
+72 Shadow Ward
+22 Sprinter
+Red CP
+75 Elemental Defender
+66 Thick Skinned
+57 Spell Shield
+72 Ironclad
+
+Healer
+Green CP
+58 Warlord
+75 Arcanist
+43 Tenacity
+72 Shadow Ward
+22 Sprinter
+Red CP
+75 Elemental Defender
+66 Thick Skinned
+57 Spell Shield
+72 Ironclad
+
+Tank
+Green CP
+56 Warlord
+64 Tenacity
+81 Shadow Ward
+Arcanist Preference
+37 Tumbling
+32 Sprinter
+Red CP
+56 Elemental Defender
+43 Hardy
+66 Thick Skinned
+24 Heavy Armor Focus
+81 Ironclad
+
+Sanctum Ophidia
+DPS
+Green CP
+26 Warlord
+35 Sprinter
+64 Arcanist/Mooncalf
+43 Tenacity
+51 Tumbling
+51 Shadow Ward
+Red CP
+72 Ironclad
+25 Medium Armor Focus/Light Armor Focus
+64 Hardy
+43 Elemental Defender
+66 Thick Skinned
+
+Healer
+Green CP
+26 Warlord
+35 Sprinter
+64 Arcanist
+43 Tenacity
+51 Tumbling
+51 Shadow Ward
+Red CP
+72 Ironclad
+25 Light Armor Focus
+64 Hardy
+43 Elemental Defender
+66 Thick Skinned
+
+Tank
+Green CP
+56 Warlord
+47 Sprinter
+39 Tenacity
+56 Tumbling
+72 Shadow Ward
+Red CP
+81 Ironclad
+64 Hardy
+43 Elemental Defender
+66 Thick Skinned
+16 Heavy Armor Focus/16 Quick Recovery
+
+Maw of Lorkhaj
+Healer
+Red CP
+72 Ironclad
+57 Spell Shield
+66 Thick Skinned
+75 Elemental Defender
+Green CP
+56 Warlord
+27 Sprinter
+32 Tenacity
+64 Arcanist
+51 Tumbling
+40 Shadow Ward
+
+Tank
+Red CP
+81 Ironclad
+66 Thick Skinned
+24 Hardy
+56 Elemental Defender
+Green CP
+37 Warlord
+28 Sprinter
+35 Bashing Focus
+37 Tenacity
+61 Tumbling
+72 Shadow Ward
+
+DPS
+Green CP
+37 Warlord
+25 Sprinter
+64 Arcanist/Mooncalf
+64 Tenacity
+43 Tumbling
+37 Shadow Ward
+Red CP
+72 Ironclad
+38 Spell Shield
+19 Hardy
+66 Thick Skinned
+75 Elemental Defender
+
+Halls of Fabrication
+DPS
+Green CP
+23 Warlord
+19 Sprinter
+64 Arcanist/Mooncalf
+64 Tenacity
+56 Tumbling
+44 Shadow Ward
+Red CP
+81 Ironclad
+10 Medium/Light Armor Focus
+49 Hardy
+49 Elemental Defender
+81 Thick Skinned
+
+Healer
+Green CP
+40 Warlord
+22 Sprinter
+64 Arcanist
+37 Tenacity
+51 Tumbling
+56 Shadow Ward
+Red CP
+81 Ironclad
+10 Medium/Light Armor Focus
+49 Hardy
+49 Elemental Defender
+81 Thick Skinned
+
+Tank
+Green CP
+56 Warlord
+35 Sprinter
+Arcanist Preference
+43 Tenacity
+56 Tumbling
+72 Shadow Ward
+Red CP
+81 Ironclad
+56 Hardy
+56 Elemental Defender
+66 Thick Skinned
+11 Heavy Armor Focus
+
+Asylum Sanctorium
+DPS
+Green CP
+75 Tenacity
+40 Shadow Ward
+75 Arcanist
+33 Warlord
+3 Sprinter
+44 Tumbling
+Red CP
+75 Elemental Defender
+44 Thick Skinned
+81 Ironclad
+70 Spell Shield
+
+Healer
+Green CP
+75 Tenacity
+37 Shadow Ward
+75 Arcanist
+23 Warlord
+51 Tumbling
+Red CP
+37 Hardy
+53 Elemental Defender
+44 Thick Skinned
+55 Spell Shield
+81 Ironclad
+
+Tank
+Green CP
+24 Warlord
+Arcanist Preference
+75 Tenacity
+81/100 Shadow Ward
+61 Tumbling
+10 Sprinter
+Red CP
+64 Hardy
+49 Elemental Defender
+34 Thick Skinned
+81 Ironclad
+42 Heavy Armor Focus
+
+Off Tank
+Green CP
+23 Warlord
+43 Tenacity
+18 Sprinter
+43 Arcanist/Preference
+81 Shadow Ward
+52 Tumbling
+Red CP
+37 Hardy
+64 Elemental Defender
+40 Thick Skinned
+81 Ironclad
+46 Quick Recovery
+2 Heavy Armor Focus
+
+Cloudrest
+DPS (Bottom)
+Green CP
+64 Arcanist
+56 Tumbling
+56 Warlord
+18 Sprinter
+45 Tenacity
+31 Shadow Ward
+Red CP
+75 elemental defender
+66 thick skinned
+40 spell shield
+66 ironclad
+23 quick recovery
+
+DPS (top)
+Green CP
+64 Arcanist
+56 Tumbling
+56 Warlord
+18 Sprinter
+45 Tenacity
+31 Shadow Ward
+Red CP
+66 Ironclad
+55 Spell Shield
+64 Elemental defender
+66 Thick Skinned
+19 Quick Recovery
+
+Healer (kite)
+Green CP
+64 Arcanist
+51 Shadow Ward
+56 Tumbling
+56 Warlord
+33 Sprinter 
+Red CP
+19 Quick Recovery
+66 Thick Skinned
+66 Ironclad
+55 Spell Shield
+64 Elemental Defender
+
+Main Tank
+Green CP
+56 Warlord
+18 Sprinter
+54 Arcanist
+19 Tenacity
+72 Shadow Ward
+51 Tumbling
+Red CP
+81 Ironclad
+75 Elemental Defender
+66 Thick Skinned
+43 Quick Recovery
+5 Spell Shield
+
+Off Tanks
+Green CP
+56 Warlord
+18 Sprinter
+Arcanist Preference/same as mt 
+19 Tenacity
+72 Shadow Ward
+51 Tumbling
+Red CP
+29 Heavy Armor Focus
+19 Quick Recovery
+56 Elemental defender
+66 Thick
+19 Hardy
+81 Ironclad
+
+Sunspire
+DPS
+Green CP
+51 Warlord
+16 Sprinter
+64 Arcanist/Mooncalf
+37 Tenacity
+51 Tumbling
+51 Shadow Ward
+Red CP
+81 Ironclad
+16 Spell Shield
+43 Hardy
+49 Elemental Defender
+81 Thick Skinned
+
+Tank
+Green CP
+56 Warlord or less
+2 Bashing Focus
+33 Sprinter
+56 Arcanist/Preference
+0 Tenacity/Preference
+72 Shadow Ward
+51 Tumbling
+Red CP
+81 Ironclad
+43 Hardy
+49 Elemental Defender
+81 Thick Skinned
+16 Heavy Armor Focus
+
+Dragonstar Arena
+DPS
+Green CP
+37 Warlord
+8 Bashing Focus
+8 Sprinter
+75 Arcanist/Mooncalf
+43 Tenacity
+51 Tumbling
+48 Shadow Ward
+Red CP
+72 Ironclad
+11 Spell Shield
+14 Medium Armor Focus/14 Light Armor Focus
+61 Thick Skinned
+56 Hardy
+56 Elemental Defender
+
+Healer
+Green CP
+37 Warlord
+8 Bashing Focus
+8 Sprinter
+75 Arcanist/Mooncalf
+43 Tenacity
+51 Tumbling
+48 Shadow Ward
+Red CP
+72 Ironclad
+25 Light Armor Focus
+56 Hardy
+56 Elemental Defender
+61 Thick Skinned
+
+Tank
+Green CP
+23 Warlord
+9 Sprinter
+16 Bashing Focus
+56 Arcanist
+43 Tenacity
+51 Tumbling
+72 Shadow Ward
+Red CP
+72 Ironclad
+56 Hardy
+56 Elemental Defender
+61 Thick Skinned
+19 Quick Recovery
+6 Heavy Armor Focus
+
+Blackrose Prison
+DPS
+Green CP
+51 Warlord
+24 Bashing Focus
+64 Arcanist/Mooncalf
+43 Tenacity
+51 Tumbling
+37 Shadow Ward
+Red CP
+72 Ironclad
+16 Spell Shield
+14 Medium Armor Focus/14 Light Armor Focus
+56 Hardy
+56 Elemental Defender
+56 Thick Skinned
+
+Healer
+Green CP
+51 Warlord
+24 Bashing Focus
+64 Arcanist/Mooncalf
+43 Tenacity
+51 Tumbling
+37 Shadow Ward
+Red CP
+72 Ironclad
+16 Spell Shield
+14 Light Armor Focus
+56 Thick Skinned
+56 Hardy
+56 Elemental Defender
+
+Tank
+Green Cp
+37 Warlord
+23 Sprinter
+16 Bashing Focus
+43 Arcanist
+19 Tenacity
+81 Shadow Ward
+51 Tumbling
+Red CP
+81 Ironclad
+56 Hardy
+56 Elemental Defender
+66 Thick Skinned
+11 Heavy Armor Focus
+
+Maelstrom Arena
+DPS
+Green CP
+48 Warlord
+8 Sprinter
+9 Bashing Focus
+75 Arcanist/Mooncalf
+37 Tenacity
+56 Tumbling
+37 Shadow Ward
+Red CP
+72 Ironclad
+15 Spell Shield
+20 Medium Armor Focus/20 Light Armor Focus
+51 Thick Skinned
+56 Hardy
+56 Elemental Defender

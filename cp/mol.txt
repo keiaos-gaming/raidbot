@@ -1,0 +1,44 @@
+Maw of Lorkhaj
+Healer
+Green CP
+56 Warlord
+27 Sprinter
+32 Tenacity
+64 Arcanist
+51 Tumbling
+40 Shadow Ward
+Red CP
+72 Ironclad
+57 Spell Shield
+66 Thick Skinned
+75 Elemental Defender
+
+Tank
+Green CP
+37 Warlord
+28 Sprinter
+35 Bashing Focus
+37 Tenacity
+61 Tumbling
+72 Shadow Ward
+Red CP
+81 Ironclad
+66 Thick Skinned
+24 Hardy
+56 Elemental Defender
+
+DPS
+Green CP
+37 Warlord
+25 Sprinter
+64 Arcanist/Mooncalf
+64 Tenacity
+43 Tumbling
+37 Shadow Ward
+Red CP
+72 Ironclad
+38 Spell Shield
+19 Hardy
+66 Thick Skinned
+75 Elemental Defender
+

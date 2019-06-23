@@ -295,12 +295,16 @@ namespace raidbot.Modules
                             await channel.SendMessageAsync (sendmsg);
                         }
                         sr.Close();
+                        //move file
+                        string archive = raid + ".txt";
+                        archive = Path.GetFullPath(archive).Replace(archive, "");
+                        archive = archive + "//archive//" + DateTime.Now.ToString("MMMM dd") + ".txt";
+                        File.Move(fileName, archive);
                     }
                     catch (Exception e)
                     {
                         await ReplyAsync("Exception: " + e.Message);
                     }
-                    
                 }
             }
             

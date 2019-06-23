@@ -1,0 +1,42 @@
+Aetherian Archive
+DPS
+Green CP
+37 Warlord
+75 Arcanist/Mooncalf
+64 Tenacity
+72 Shadow Ward
+22 Sprinter
+Red CP
+75 Elemental Defender
+66 Thick Skinned
+57 Spell Shield
+72 Ironclad
+
+Healer
+Green CP
+58 Warlord
+75 Arcanist
+43 Tenacity
+72 Shadow Ward
+22 Sprinter
+Red CP
+75 Elemental Defender
+66 Thick Skinned
+57 Spell Shield
+72 Ironclad
+
+Tank
+Green CP
+56 Warlord
+64 Tenacity
+81 Shadow Ward
+Arcanist Preference
+37 Tumbling
+32 Sprinter
+Red CP
+56 Elemental Defender
+43 Hardy
+66 Thick Skinned
+24 Heavy Armor Focus
+81 Ironclad
+

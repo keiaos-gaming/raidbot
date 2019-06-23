@@ -1,0 +1,48 @@
+Hel Ra Citadel
+DPS
+Green CP
+26 Warlord
+16 Sprinter
+16 Bashing Focus
+64 Tenacity
+64 Mooncalf/Arcanist
+23 Tumbling
+61 Shadow Ward
+Red CP
+81 Ironclad
+16 Spell Shield
+56 Hardy
+56 Elemental Defender
+61 Thick Skinned
+
+Healer
+Green CP
+56 Warlord
+27 Sprinter
+32 Tenacity
+64 Arcanist
+51 Tumbling
+40 Shadow Ward
+Red CP
+72 Ironclad
+17 Light Armor Focus
+61 Thick Skinned
+64 Hardy
+56 Elemental Defender
+
+Tank
+Green CP
+46 Warlord
+16 Sprinter
+16 Bashing Focus
+64 Tenacity
+Arcanist Preference
+56 Tumbling
+72 Shadow Ward
+Red CP
+81 Ironclad
+64 Hardy
+37 Elemental defender
+61 Thick Skinned
+27 Heavy Armor Focus
+

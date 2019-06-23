@@ -1,0 +1,76 @@
+Cloudrest
+DPS Bottom
+Green CP
+64 Arcanist
+56 Tumbling
+56 Warlord
+18 Sprinter
+45 Tenacity
+31 Shadow Ward
+Red CP
+75 elemental defender
+66 thick skinned
+40 spell shield
+66 ironclad
+23 quick recovery
+
+DPS top
+Green CP
+64 Arcanist
+56 Tumbling
+56 Warlord
+18 Sprinter
+45 Tenacity
+31 Shadow Ward
+Red CP
+66 Ironclad
+55 Spell Shield
+64 Elemental defender
+66 Thick Skinned
+19 Quick Recovery
+
+Healer kite
+Green CP
+64 Arcanist
+51 Shadow Ward
+56 Tumbling
+56 Warlord
+33 Sprinter 
+Red CP
+19 Quick Recovery
+66 Thick Skinned
+66 Ironclad
+55 Spell Shield
+64 Elemental Defender
+
+Tank
+Green CP
+56 Warlord
+18 Sprinter
+54 Arcanist
+19 Tenacity
+72 Shadow Ward
+51 Tumbling
+Red CP
+81 Ironclad
+75 Elemental Defender
+66 Thick Skinned
+43 Quick Recovery
+5 Spell Shield
+
+Off Tank
+Green CP
+56 Warlord
+18 Sprinter
+Arcanist Preference/same as mt 
+19 Tenacity
+72 Shadow Ward
+51 Tumbling
+Red CP
+29 Heavy Armor Focus
+19 Quick Recovery
+56 Elemental defender
+66 Thick
+19 Hardy
+81 Ironclad
+

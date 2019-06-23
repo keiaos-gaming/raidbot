@@ -1,0 +1,47 @@
+Sunspire
+DPS
+Green CP
+51 Warlord
+16 Sprinter
+64 Arcanist/Mooncalf
+37 Tenacity
+51 Tumbling
+51 Shadow Ward
+Red CP
+81 Ironclad
+16 Spell Shield
+43 Hardy
+49 Elemental Defender
+81 Thick Skinned
+
+Healer
+Green CP
+51 Warlord
+16 Sprinter
+64 Arcanist/Mooncalf
+37 Tenacity
+51 Tumbling
+51 Shadow Ward
+Red CP
+81 Ironclad
+16 Spell Shield
+43 Hardy
+49 Elemental Defender
+81 Thick Skinned
+
+Tank
+Green CP
+56 Warlord or less
+2 Bashing Focus
+33 Sprinter
+56 Arcanist/Preference
+0 Tenacity/Preference
+72 Shadow Ward
+51 Tumbling
+Red CP
+81 Ironclad
+43 Hardy
+49 Elemental Defender
+81 Thick Skinned
+16 Heavy Armor Focus
+

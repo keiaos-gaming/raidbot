@@ -1,0 +1,60 @@
+Asylum Sanctorium
+DPS
+Green CP
+75 Tenacity
+40 Shadow Ward
+75 Arcanist
+33 Warlord
+3 Sprinter
+44 Tumbling
+Red CP
+75 Elemental Defender
+44 Thick Skinned
+81 Ironclad
+70 Spell Shield
+
+Healer
+Green CP
+75 Tenacity
+37 Shadow Ward
+75 Arcanist
+23 Warlord
+51 Tumbling
+Red CP
+37 Hardy
+53 Elemental Defender
+44 Thick Skinned
+55 Spell Shield
+81 Ironclad
+
+Tank
+Green CP
+24 Warlord
+Arcanist Preference
+75 Tenacity
+81/100 Shadow Ward
+61 Tumbling
+10 Sprinter
+Red CP
+64 Hardy
+49 Elemental Defender
+34 Thick Skinned
+81 Ironclad
+42 Heavy Armor Focus
+
+Off Tank
+Green CP
+23 Warlord
+43 Tenacity
+18 Sprinter
+43 Arcanist/Preference
+81 Shadow Ward
+52 Tumbling
+Red CP
+37 Hardy
+64 Elemental Defender
+40 Thick Skinned
+81 Ironclad
+46 Quick Recovery
+2 Heavy Armor Focus
+

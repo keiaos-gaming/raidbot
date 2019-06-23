@@ -80,6 +80,21 @@ namespace raidbot.Services
             {
                 await message.Channel.SendMessageAsync("*I'm a real boy... I mean bot.*");
             }
+            else if (message.ToString().ToLower().Contains("fight me") || message.ToString().ToLower().Contains("fite me"))
+            {
+                await message.Channel.SendMessageAsync("Cash me outside, how bou dah");
+            }
+            else if (message.ToString().ToLower().StartsWith("im") || message.ToString().ToLower().StartsWith("i'm"))
+            {
+                char[] charArray = message.ToString().ToCharArray();
+                if (charArray.Length < 35)
+                {
+                    string dadJoke = message.ToString().ToLower().Replace("im", "");
+                    dadJoke = message.ToString().ToLower().Replace("i'm", "");
+                    string msg = $"Hi {dadJoke}, I'm Dad.";
+                    await message.Channel.SendMessageAsync(msg);                
+                }
+            }
 
             // determine if the message has a valid prefix, and adjust argPos based on prefix
             if (!(message.HasMentionPrefix(_client.CurrentUser, ref argPos) || message.HasCharPrefix(prefix, ref argPos))) 

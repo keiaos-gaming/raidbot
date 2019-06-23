@@ -1,0 +1,51 @@
+Dragonstar Arena
+DPS
+Green CP
+37 Warlord
+8 Bashing Focus
+8 Sprinter
+75 Arcanist/Mooncalf
+43 Tenacity
+51 Tumbling
+48 Shadow Ward
+Red CP
+72 Ironclad
+11 Spell Shield
+14 Medium Armor Focus/14 Light Armor Focus
+61 Thick Skinned
+56 Hardy
+56 Elemental Defender
+
+Healer
+Green CP
+37 Warlord
+8 Bashing Focus
+8 Sprinter
+75 Arcanist/Mooncalf
+43 Tenacity
+51 Tumbling
+48 Shadow Ward
+Red CP
+72 Ironclad
+25 Light Armor Focus
+56 Hardy
+56 Elemental Defender
+61 Thick Skinned
+
+Tank
+Green CP
+23 Warlord
+9 Sprinter
+16 Bashing Focus
+56 Arcanist
+43 Tenacity
+51 Tumbling
+72 Shadow Ward
+Red CP
+72 Ironclad
+56 Hardy
+56 Elemental Defender
+61 Thick Skinned
+19 Quick Recovery
+6 Heavy Armor Focus
+

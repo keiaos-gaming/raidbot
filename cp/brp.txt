@@ -1,0 +1,49 @@
+Blackrose Prison
+DPS
+Green CP
+51 Warlord
+24 Bashing Focus
+64 Arcanist/Mooncalf
+43 Tenacity
+51 Tumbling
+37 Shadow Ward
+Red CP
+72 Ironclad
+16 Spell Shield
+14 Medium Armor Focus/14 Light Armor Focus
+56 Hardy
+56 Elemental Defender
+56 Thick Skinned
+
+Healer
+Green CP
+51 Warlord
+24 Bashing Focus
+64 Arcanist/Mooncalf
+43 Tenacity
+51 Tumbling
+37 Shadow Ward
+Red CP
+72 Ironclad
+16 Spell Shield
+14 Light Armor Focus
+56 Thick Skinned
+56 Hardy
+56 Elemental Defender
+
+Tank
+Green Cp
+37 Warlord
+23 Sprinter
+16 Bashing Focus
+43 Arcanist
+19 Tenacity
+81 Shadow Ward
+51 Tumbling
+Red CP
+81 Ironclad
+56 Hardy
+56 Elemental Defender
+66 Thick Skinned
+11 Heavy Armor Focus
+
