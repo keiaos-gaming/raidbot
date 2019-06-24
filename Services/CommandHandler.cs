@@ -58,41 +58,48 @@ namespace raidbot.Services
 
             // get prefix from the configuration file
             char prefix = Char.Parse(_config["Prefix"]);
+            ulong botChannel = Convert.ToUInt64(_config["BotchannelID"]);
 
-            //add some sass to the bot
-            if (message.ToString().ToLower().Contains("sucks")|| message.ToString().ToLower().Contains("suck"))
+            if (message.Channel.Id != botChannel) //doesnt sass the admin channel
             {
-                await message.Channel.SendMessageAsync("I mean, you can think that.");
-            }
-            else if (message.ToString().ToLower().Contains("no u"))
-            {
-                await message.Channel.SendMessageAsync("no u");
-            }
-            else if (message.ToString().ToLower().Contains("fuck you") || message.ToString().ToLower().Contains("fuck u"))
-            {
-                await message.Channel.SendMessageAsync("u wot m8");
-            }
-            else if (message.ToString().ToLower().Contains("bad bot"))
-            {
-                await message.Channel.SendMessageAsync("Sorry.");
-            }
-            else if (message.ToString().ToLower().Contains("real bot"))
-            {
-                await message.Channel.SendMessageAsync("*I'm a real boy... I mean bot.*");
-            }
-            else if (message.ToString().ToLower().Contains("fight me") || message.ToString().ToLower().Contains("fite me"))
-            {
-                await message.Channel.SendMessageAsync("Cash me outside, how bou dah");
-            }
-            else if (message.ToString().ToLower().StartsWith("im") || message.ToString().ToLower().StartsWith("i'm"))
-            {
-                char[] charArray = message.ToString().ToCharArray();
-                if (charArray.Length < 35)
+                //add some sass to the bot
+                if (message.ToString().ToLower().Contains("sucks")|| message.ToString().ToLower().Contains("suck"))
                 {
-                    string dadJoke = message.ToString().ToLower().Replace("im", "");
-                    dadJoke = message.ToString().ToLower().Replace("i'm", "");
-                    string msg = $"Hi {dadJoke}, I'm Dad.";
-                    await message.Channel.SendMessageAsync(msg);                
+                    await message.Channel.SendMessageAsync("I mean, you can think that.");
+                }
+                else if (message.ToString().ToLower().Contains("no u ") || message.ToString().ToLower() == "no u")
+                {
+                    await message.Channel.SendMessageAsync("no u");
+                }
+                else if (message.ToString().ToLower().Contains("fuck you") || message.ToString().ToLower().Contains("fuck u"))
+                {
+                    await message.Channel.SendMessageAsync("u wot m8");
+                }
+                else if (message.ToString().ToLower().Contains("bad bot"))
+                {
+                    await message.Channel.SendMessageAsync("Sorry.");
+                }
+                else if (message.ToString().ToLower().Contains("real bot"))
+                {
+                    await message.Channel.SendMessageAsync("*I'm a real boy... I mean bot.*");
+                }
+                else if (message.ToString().ToLower().Contains("fight me") || message.ToString().ToLower().Contains("fite me"))
+                {
+                    await message.Channel.SendMessageAsync("Cash me outside, how bou dah");
+                }
+                else if (message.ToString().ToLower().StartsWith("im ") || message.ToString().ToLower().StartsWith("i'm "))
+                {
+                    char[] charArray = message.ToString().ToCharArray();
+                    if (charArray.Length < 35)
+                    {
+                        string dadJoke = "";
+                        if (message.ToString().ToLower().StartsWith("im "))
+                            dadJoke = message.ToString().ToLower().Replace("im", "");
+                        if (message.ToString().ToLower().StartsWith("i'm "))
+                            dadJoke = message.ToString().ToLower().Replace("i'm", "");
+                        string msg = $"Hi{dadJoke}, I'm Dad.";
+                        await message.Channel.SendMessageAsync(msg);                
+                    }
                 }
             }
 

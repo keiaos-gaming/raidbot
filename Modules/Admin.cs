@@ -324,7 +324,7 @@ namespace raidbot.Modules
             }
             else 
             {
-                string line = "", sendmsg = "";
+                string sendmsg = "";
                 List<string> names = new List<string>();
                 List<string> roles = new List<string>();
                 bool playerFound = false;
