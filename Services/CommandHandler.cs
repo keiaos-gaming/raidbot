@@ -63,7 +63,11 @@ namespace raidbot.Services
             if (message.Channel.Id != botChannel) //doesnt sass the admin channel
             {
                 //add some sass to the bot
-                if (message.ToString().ToLower().Contains("sucks")|| message.ToString().ToLower().Contains("suck"))
+                if (message.ToString().ToLower().Contains("bot sucks") && message.Author.Username.ToLower() == "vishy")
+                {
+                    await message.Channel.SendMessageAsync("Get a life vishy.");
+                }
+                else if (message.ToString().ToLower().Contains("sucks")|| message.ToString().ToLower().Contains("suck"))
                 {
                     await message.Channel.SendMessageAsync("I mean, you can think that.");
                 }
